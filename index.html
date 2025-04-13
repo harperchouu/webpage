@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>黃牛票模擬器</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+      background-color: #f7f7f7;
+    }
+    .card {
+      background: white;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 1.5em;
+      margin-bottom: 1em;
+      color: #222;
+    }
+    label {
+      display: block;
+      margin-top: 1em;
+    }
+    input, select {
+      padding: 0.5em;
+      width: 100%;
+      margin-top: 0.5em;
+    }
+    button {
+      margin-top: 1.5em;
+      padding: 0.75em 1.5em;
+      font-size: 1em;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 1.5em;
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>黃牛票售價模擬器</h1>
+    <label for="basePrice">原票價（台幣）:</label>
+    <input type="number" id="basePrice" placeholder="例如：3800" />
+
+    <label for="demandLevel">市場需求：</label>
+    <select id="demandLevel">
+      <option value="low">低</option>
+      <option value="medium">中</option>
+      <option value="high">高</option>
+    </select>
+
+    <label for="isLimited">是否限量票：</label>
+    <select id="isLimited">
+      <option value="no">否</option>
+      <option value="yes">是</option>
+    </select>
+
+    <button onclick="calculateScalperPrice()">計算黃牛票價</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateScalperPrice() {
+      const basePrice = parseFloat(document.getElementById('basePrice').value);
+      const demand = document.getElementById('demandLevel').value;
+      const isLimited = document.getElementById('isLimited').value === 'yes';
+
+      if (isNaN(basePrice) || basePrice <= 0) {
+        alert('請輸入有效的原票價');
+        return;
+      }
+
+      let multiplier = 1;
+
+      switch (demand) {
+        case 'low':
+          multiplier += 0.1;
+          break;
+        case 'medium':
+          multiplier += 0.5;
+          break;
+        case 'high':
+          multiplier += 1;
+          break;
+      }
+
+      if (isLimited) multiplier += 0.5;
+
+      const scalperPrice = Math.round(basePrice * multiplier);
+
+      document.getElementById('result').innerText = `模擬黃牛票價：約為 NT$${scalperPrice}`;
+    }
+  </script>
+</body>
+</html>
